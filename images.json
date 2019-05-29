@@ -1,0 +1,6 @@
+[
+    {"envoy":"v1.9.0" , "tomcat":"9.0.16-jre8", "jaeger":"0.4.2", "fluentd":"1.5.0", "tags" : ["latest"] },
+    {"envoy":"v1.9.0" , "tomcat":"8.5.38-jre8", "jaeger":"0.4.2", "fluentd":"1.5.0"},
+    {"envoy":"v1.9.0" , "tomcat":"7.0.92-jre8", "jaeger":"0.4.2", "fluentd":"1.5.0"},
+    {"envoy":"v1.9.0" , "tomcat":"7.0.92-jre7", "jaeger":"0.4.2", "fluentd":"1.5.0" }
+]
