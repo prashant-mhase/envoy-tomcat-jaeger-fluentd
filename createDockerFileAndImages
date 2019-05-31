@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+const Mustache = require('mustache') 
+const fs = require('fs');
+const { execSync } = require('child_process');
+const canPush = process.argv.indexOf('--push') > -1
+var images= JSON.parse(fs.readFileSync('images.json', 'utf8'))
+var dockerFiletemplate = fs.readFileSync('Dockerfile', 'utf8')
+images.forEach(imageInfo => { 
+    var output = Mustache.render(dockerFiletemplate, imageInfo);
+    var tag = `${imageInfo.envoy}-${imageInfo.tomcat}-${imageInfo.jaeger}-${imageInfo.fluentd}-alpine`
+    var dockerfileName = `Dockerfile-${tag}`
+    fs.writeFileSync(dockerfileName, output)
+    var imageTagName = `envoyproxyplus/envoy-tomcat-jaeger-fluentd:${tag}`
+    console.log(`building image for envoy ${imageInfo.envoy}, tomcat ${imageInfo.tomcat}, jaeger ${imageInfo.jaeger} and fluentd ${imageInfo.fluentd}`)  
+    let stdout = execSync(`docker build -t ${imageTagName} -f ${dockerfileName} .`)
+    console.log(stdout.toString())
+    if(canPush)
+    {
+        stdout = execSync(`docker push ${imageTagName}`)
+        console.log(stdout.toString())    
+    }
+});
